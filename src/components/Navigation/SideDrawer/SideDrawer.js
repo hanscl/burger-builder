@@ -11,7 +11,7 @@ const sideDrawer = (props) => {
     attachedClasses = [classes.SideDrawer, classes.Open];
   }
 
-  console.log(attachedClasses);
+ // console.log(attachedClasses);
 
   return (
     <Aux>

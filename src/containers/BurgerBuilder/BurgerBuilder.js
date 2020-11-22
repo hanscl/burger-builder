@@ -26,6 +26,7 @@ class BurgerBuilder extends Component {
   };
 
   componentDidMount = () => {
+    //console.log(this.props);
     axios
       .get(`/ingredients.json`)
       .then((response) => {
@@ -33,7 +34,7 @@ class BurgerBuilder extends Component {
       })
       .catch((error) => {
         this.setState({ error: true });
-        console.log('error in ingr load');
+       // console.log('error in ingr load');
       });
   };
 
@@ -83,28 +84,17 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Hans L.',
-        address: {
-          street: 'street 123',
-          zipCode: '89332',
-        },
-        email: 'hans.luther@yahoo.com',
-      },
-      deliveryMethod: 'fastest',
-    };
-
-    axios
-      .post('/orders.json', order)
-      .then((response) => console.log(response))
-      .catch((error) => console.log(error))
-      .finally(() => {
-        this.setState({ loading: false, purchasing: false });
-      });
+    this.props.history.push({
+      pathname: '/checkout',
+      search:
+        '?' +
+        Object.keys(this.state.ingredients)
+          .map((ingrKey) => {
+            return `${encodeURIComponent(ingrKey)}=${encodeURIComponent(this.state.ingredients[ingrKey])}`;
+          })
+          .join('&') +
+        `&price=${this.state.totalPrice}`,
+    });
   };
 
   render() {
